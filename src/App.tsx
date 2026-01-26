@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useParams, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { 
   MapPin, 
   CheckCircle2, 
@@ -26,6 +27,47 @@ import { twMerge } from 'tailwind-merge';
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+// --- SEO Component ---
+
+interface SEOProps {
+  title: string;
+  description: string;
+  canonical?: string;
+  schema?: object;
+}
+
+const SEO = ({ title, description, canonical, schema }: SEOProps) => {
+  const fullTitle = `${title} | DFW Hardscaping`;
+  const url = canonical || `https://dfwhardscaping.com${window.location.pathname}`;
+
+  return (
+    <Helmet>
+      <title>{fullTitle}</title>
+      <meta name="description" content={description} />
+      <link rel="canonical" href={url} />
+      
+      {/* Open Graph / Facebook */}
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={url} />
+      <meta property="og:image" content="https://dfwhardscaping.com/assets/hardscaping/hardscaping-services-in-colleyville-tx-scaled.jpg" />
+
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:description" content={description} />
+
+      {/* Schema.org JSON-LD */}
+      {schema && (
+        <script type="application/ld+json">
+          {JSON.stringify(schema)}
+        </script>
+      )}
+    </Helmet>
+  );
+};
 
 const HeaderFont = "font-['Outfit'] font-black tracking-tight";
 
@@ -268,6 +310,10 @@ const ServiceAreasPage = () => {
       exit={{ opacity: 0 }}
       className="pt-32 pb-24 "
     >
+      <SEO 
+        title="Service Areas | Hardscaping Coverage Across North Texas"
+        description="DFW Hardscaping serves over 50 cities across Dallas-Fort Worth. View our full service area including Southlake, Plano, Frisco, Fort Worth, and more."
+      />
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
           <span className="text-slate-700 font-bold uppercase tracking-widest text-sm mb-4 block">Our Metroplex Reach</span>
@@ -438,7 +484,7 @@ const Hero = () => (
           <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/5] lg:aspect-auto lg:h-[650px]">
             <img 
               src="/assets/hardscaping/hardscaping-services-in-colleyville-tx-scaled.jpg" 
-              alt="DFW Professional Hardscaping" 
+              alt="Luxury stone paver patio and outdoor living space by DFW Hardscaping" 
               className="w-full h-full object-cover"
             />
           </div>
@@ -459,8 +505,8 @@ const AboutUs = () => (
           className="order-2 lg:order-1"
         >
           <div className="grid grid-cols-2 gap-4">
-            <img src="/assets/hardscaping/hardscaping-mobile-img.webp" className="rounded-3xl shadow-xl h-80 w-full object-cover mt-12" alt="Hardscaping 1" />
-            <img src="/assets/brick work/Brick-Stone-Wall-2.jpg" className="rounded-3xl shadow-xl h-80 w-full object-cover" alt="Hardscaping 2" />
+            <img src="/assets/hardscaping/hardscaping-mobile-img.webp" className="rounded-3xl shadow-xl h-80 w-full object-cover mt-12" alt="Professional hardscaping installation in Dallas-Fort Worth" />
+            <img src="/assets/brick work/Brick-Stone-Wall-2.jpg" className="rounded-3xl shadow-xl h-80 w-full object-cover" alt="Structural stone masonry and brick wall construction" />
           </div>
         </motion.div>
         <motion.div 
@@ -517,7 +563,7 @@ const RecentWork = () => (
           >
             <img 
               src={project.image} 
-              alt={project.title} 
+              alt={`${project.title} - ${project.category} project by DFW Hardscaping`} 
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent p-10 flex flex-col justify-end">
@@ -718,7 +764,7 @@ const Services = () => {
               className="bg-white rounded-3xl overflow-hidden shadow-2xl group hover:-translate-y-2 transition-all duration-500"
             >
               <div className="h-72 overflow-hidden relative">
-                <img src={s.image} alt={s.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                <img src={s.image} alt={`${s.title} - Professional hardscaping service in DFW`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
               </div>
               <div className="p-10">
                 <h3 className="text-3xl font-black mb-4 uppercase tracking-tighter italic">{s.title}</h3>
@@ -778,6 +824,26 @@ const LocationPage = () => {
   const location = SERVICE_AREAS.find(a => a.slug === city);
   const cityName = location?.name || city?.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
+  const citySchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": `DFW Hardscaping ${cityName}`,
+    "description": `Top-rated hardscaping contractor in ${cityName}, TX. Specialist in patios, walls, and outdoor living.`,
+    "areaServed": {
+      "@type": "City",
+      "name": cityName
+    },
+    "telephone": "682-244-4610",
+    "url": `https://dfwhardscaping.com/location/${city}`,
+    "image": "https://dfwhardscaping.com/assets/hardscaping/hardscaping-services-in-colleyville-tx-scaled.jpg",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": cityName,
+      "addressRegion": "TX",
+      "addressCountry": "US"
+    }
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -785,6 +851,11 @@ const LocationPage = () => {
       exit={{ opacity: 0 }}
       className="pt-40"
     >
+      <SEO 
+        title={`Hardscaping Contractor in ${cityName}, TX | Custom Stone Work`}
+        description={`Searching for hardscaping in ${cityName}? DFW Hardscaping builds professional stone patios, retaining walls, and outdoor kitchens in ${cityName}, TX. Free estimates.`}
+        schema={citySchema}
+      />
       <div className="max-w-7xl mx-auto px-4">
         <div className="max-w-4xl mb-32">
           <motion.div
@@ -826,7 +897,7 @@ const LocationPage = () => {
                   className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 hover:shadow-2xl transition-all group h-full flex flex-col"
                 >
                   <div className="h-72 overflow-hidden">
-                    <img src={s.image} alt={s.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                    <img src={s.image} alt={`${s.title} in ${cityName}, TX - Expert hardscaping installation`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                   </div>
                   <div className="p-10 flex-grow">
                     <h3 className="text-2xl font-black mb-4 uppercase tracking-widest italic">{s.title}</h3>
@@ -939,6 +1010,23 @@ const ServiceLocationPage = () => {
 
   if (!service || !serviceId) return <div>Service not found</div>;
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": `${service.title} in ${cityName}, TX`,
+    "description": service.desc,
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "DFW Hardscaping",
+      "telephone": "682-244-4610",
+      "url": "https://dfwhardscaping.com"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": cityName
+    }
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -946,6 +1034,11 @@ const ServiceLocationPage = () => {
       exit={{ opacity: 0 }}
       className="pt-40 pb-32"
     >
+      <SEO 
+        title={`${service.title} in ${cityName}, TX | Professional Installation`}
+        description={`Elite ${service.title.toLowerCase()} installation in ${cityName}, TX. Our master masons build durable, high-end ${service.title.toLowerCase()} to suit your ${cityName} estate.`}
+        schema={serviceSchema}
+      />
       <div className="max-w-7xl mx-auto px-4">
         <Link to={`/location/${city}`} className="inline-flex items-center gap-3 text-slate-600 font-black uppercase text-xs tracking-widest mb-12 hover:gap-5 transition-all">
           <ArrowRight className="w-5 h-5 rotate-180" /> Back to {cityName}
@@ -977,7 +1070,7 @@ const ServiceLocationPage = () => {
           
           <div className="space-y-10 lg:sticky lg:top-40">
             <div className="relative rounded-[3rem] overflow-hidden shadow-2xl   transition-all duration-700">
-              <img src={service.image} className="w-full h-full object-cover" alt={`${service.title} in ${cityName}`} />
+              <img src={service.image} className="w-full h-full object-cover" alt={`${service.title} professional installation in ${cityName}, TX by DFW Hardscaping`} />
             </div>
 
             <div className="bg-gray-900 p-12 rounded-[3rem] shadow-2xl text-white">
@@ -998,6 +1091,40 @@ const ServiceLocationPage = () => {
 // --- Main App ---
 
 export default function App() {
+  const homeSchema = {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    "name": "DFW Hardscaping",
+    "image": "https://dfwhardscaping.com/assets/hardscaping/hardscaping-services-in-colleyville-tx-scaled.jpg",
+    "@id": "https://dfwhardscaping.com",
+    "url": "https://dfwhardscaping.com",
+    "telephone": "682-244-4610",
+    "priceRange": "$$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "DFW Metroplex",
+      "addressLocality": "Dallas-Fort Worth",
+      "addressRegion": "TX",
+      "postalCode": "76101",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 32.7767,
+      "longitude": -96.7970
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      "opens": "08:00",
+      "closes": "18:00"
+    },
+    "sameAs": [
+      "https://www.facebook.com/dfwhardscaping",
+      "https://www.instagram.com/dfwhardscaping"
+    ]
+  };
+
   return (
     <Router>
       <ScrollToTop />
@@ -1007,6 +1134,11 @@ export default function App() {
           <Routes>
             <Route path="/" element={
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <SEO 
+                  title="DFW Hardscaping | Elite Stone & Outdoor Living Construction"
+                  description="Premium hardscaping in Dallas-Fort Worth. Specialized in stone patios, retaining walls, outdoor kitchens, and custom pergolas. Built to spec since 2014."
+                  schema={homeSchema}
+                />
                 <Hero />
                 <Process />
                 <AboutUs />
