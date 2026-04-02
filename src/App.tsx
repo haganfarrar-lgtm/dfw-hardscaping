@@ -1093,22 +1093,22 @@ function LeadForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <h3 className="text-2xl font-bold mb-1">Get Your Free Estimate</h3>
       <p className="opacity-70 mb-4">Fill out the form and we will get back to you within 24 hours.</p>
-      <input type="text" required placeholder="Full Name *" value={formData.name} onChange={(e: any) => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 backdrop-blur outline-none transition placeholder-white/50 text-white" />
-      <input type="tel" required placeholder="Phone Number *" value={formData.phone} onChange={(e: any) => setFormData({...formData, phone: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 backdrop-blur outline-none transition placeholder-white/50 text-white" />
-      <input type="text" required placeholder="Address *" value={formData.address} onChange={(e: any) => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 backdrop-blur outline-none transition placeholder-white/50 text-white" />
-      <select required value={formData.budget} onChange={(e: any) => setFormData({...formData, budget: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 backdrop-blur outline-none transition text-white">
-        <option value="" className="text-black">Select Your Budget</option>
-        <option value="Under $1,000" className="text-black">Under $1,000</option>
-        <option value="$1,000 - $2,000" className="text-black">$1,000 - $2,000</option>
-        <option value="$2,000 - $3,000" className="text-black">$2,000 - $3,000</option>
-        <option value="$3,000 - $4,000" className="text-black">$3,000 - $4,000</option>
-        <option value="$4,000 - $5,000" className="text-black">$4,000 - $5,000</option>
-        <option value="$5,000 - $10,000" className="text-black">$5,000 - $10,000</option>
-        <option value="$10,000+" className="text-black">$10,000+</option>
+      <input type="text" required placeholder="Full Name *" value={formData.name} onChange={(e: any) => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-stone-300 bg-white outline-none transition placeholder-stone-400 text-stone-800 focus:ring-2 focus:ring-green-500 focus:border-transparent" />
+      <input type="tel" required placeholder="Phone Number *" value={formData.phone} onChange={(e: any) => setFormData({...formData, phone: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-stone-300 bg-white outline-none transition placeholder-stone-400 text-stone-800 focus:ring-2 focus:ring-green-500 focus:border-transparent" />
+      <input type="text" required placeholder="Address *" value={formData.address} onChange={(e: any) => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-stone-300 bg-white outline-none transition placeholder-stone-400 text-stone-800 focus:ring-2 focus:ring-green-500 focus:border-transparent" />
+      <select required value={formData.budget} onChange={(e: any) => setFormData({...formData, budget: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-stone-300 bg-white outline-none transition text-stone-800 focus:ring-2 focus:ring-green-500 focus:border-transparent">
+        <option value="">Select Your Budget</option>
+        <option value="Under $1,000">Under $1,000</option>
+        <option value="$1,000 - $2,000">$1,000 - $2,000</option>
+        <option value="$2,000 - $3,000">$2,000 - $3,000</option>
+        <option value="$3,000 - $4,000">$3,000 - $4,000</option>
+        <option value="$4,000 - $5,000">$4,000 - $5,000</option>
+        <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+        <option value="$10,000+">$10,000+</option>
       </select>
-      <textarea rows={3} placeholder="Tell us about your project..." value={formData.message} onChange={(e: any) => setFormData({...formData, message: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 backdrop-blur outline-none transition placeholder-white/50 text-white resize-none" />
-      <button type="submit" disabled={status === 'sending'} className="w-full py-4 bg-white text-stone-800 font-bold rounded-xl hover:bg-white/90 transition disabled:opacity-50 text-lg">{status === 'sending' ? 'Sending...' : 'Get My Free Estimate'}</button>
-      {status === 'error' && <p className="text-red-300 text-sm text-center">Something went wrong. Please call us directly.</p>}
+      <textarea rows={3} placeholder="Tell us about your project..." value={formData.message} onChange={(e: any) => setFormData({...formData, message: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-stone-300 bg-white outline-none transition placeholder-stone-400 text-stone-800 focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none" />
+      <button type="submit" disabled={status === 'sending'} className="w-full py-4 bg-stone-800 text-white font-bold rounded-xl hover:bg-stone-900 transition disabled:opacity-50 text-lg">{status === 'sending' ? 'Sending...' : 'Get My Free Estimate'}</button>
+      {status === 'error' && <p className="text-red-500 text-sm text-center">Something went wrong. Please call us directly.</p>}
     </form>
   );
 }
