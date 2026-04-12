@@ -11,31 +11,21 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-  <!-- Popup Lead Form -->
-<div id="lp-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)">
-<div id="lp-bg" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0" onclick="if(event.target===this)closeLp()">
-<div id="lp-card" style="background:#fff;width:100%;height:100%;overflow-y:auto;padding:20px 20px 24px;position:relative">
-<button onclick="closeLp()" style="position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;background:#f3f4f6;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2" stroke-linecap="round"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
-<h3 style="font-size:20px;font-weight:800;color:#0f172a;margin:0 0 4px">Get Your Free Estimate</h3>
-<p style="font-size:12px;color:#6b7280;margin:0 0 16px">Fill out the form and we'll get back to you within 24 hours.</p>
-<form id="lp-form" style="display:flex;flex-direction:column;gap:10px">
-<input type="text" name="name" required placeholder="Full Name *" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box">
-<input type="tel" name="phone" required placeholder="Phone Number *" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box">
-<input type="text" name="address" required placeholder="Address *" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box">
-<select name="budget" required style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;background:#fff;box-sizing:border-box"><option value="">Select Your Budget *</option><option value="Under $1,000">Under $1,000</option><option value="$1,000 - $2,000">$1,000 - $2,000</option><option value="$2,000 - $3,000">$2,000 - $3,000</option><option value="$3,000 - $4,000">$3,000 - $4,000</option><option value="$4,000 - $5,000">$4,000 - $5,000</option><option value="$5,000 - $10,000">$5,000 - $10,000</option><option value="$10,000+">$10,000+</option></select>
-<textarea name="message" rows="2" placeholder="Tell us about your project..." style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;resize:none;box-sizing:border-box"></textarea>
-<button type="submit" style="width:100%;padding:12px;background:#1e293b;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer">Get My Free Estimate</button>
-</form>
-<div id="lp-ok" style="display:none;text-align:center;padding:40px 0"><div style="font-size:48px;margin-bottom:16px">✅</div><h3 style="font-size:20px;font-weight:700;color:#0f172a;margin:0 0 8px">Thank You!</h3><p style="color:#6b7280">We've received your request and will be in touch shortly.</p></div>
+  
+<!-- GHL Lead Form -->
+<div id="lp-ghl" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)">
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0" onclick="if(event.target===this)closeLpGhl()">
+<div style="background:#fff;width:100%;height:100%;position:relative;overflow:hidden">
+<button onclick="closeLpGhl()" style="position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;background:#f3f4f6;border:none;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2" stroke-linecap="round"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+<iframe src="https://api.leadconnectorhq.com/widget/form/V9QMkt1feBt2gDK2gXPy" style="width:100%;height:100%;border:none;padding-top:8px" scrolling="yes" title="Get Free Estimate"></iframe>
 </div></div></div>
-<style>@media(min-width:641px){#lp-bg{padding:16px}#lp-card{width:100%;max-width:480px;height:auto;max-height:90vh;border-radius:16px;padding:32px}}</style>
+<style>@media(min-width:641px){#lp-ghl>div>div{width:480px;height:90vh;max-height:700px;border-radius:16px}}</style>
 <script>
-function openLp(){document.getElementById('lp-modal').style.display='block';document.body.style.overflow='hidden';var f=document.querySelector('#lp-form input[name=name]');if(f)setTimeout(function(){f.focus()},100)}
-function closeLp(){document.getElementById('lp-modal').style.display='none';document.body.style.overflow=''}
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLp()});
-document.getElementById('lp-form').addEventListener('submit',function(e){e.preventDefault();var d={};new FormData(this).forEach(function(v,k){d[k]=v});d.source=location.hostname;d.sourceUrl=location.href;fetch('https://app.lowkly.com/api/webhooks/leads/q3fp5i6sogd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(function(r){if(r.ok){document.getElementById('lp-form').style.display='none';document.getElementById('lp-ok').style.display='block'}}).catch(function(){alert('Something went wrong. Please call us directly.')})});
-document.addEventListener('click',function(e){var a=e.target.closest('a,button');if(!a)return;var h=a.getAttribute('href')||'';var t=a.textContent||'';if(h.includes('#contact')||h.includes('#quote')||t.match(/quote|estimate|consult|start.*project|request.*plan|book.*consult/i)){e.preventDefault();e.stopPropagation();openLp()}},true);
-if(typeof openModal!=='undefined'){var _om=openModal;openModal=openLp}else{window.openModal=openLp}
+function openLpGhl(){document.getElementById('lp-ghl').style.display='block';document.body.style.overflow='hidden'}
+function closeLpGhl(){document.getElementById('lp-ghl').style.display='none';document.body.style.overflow=''}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLpGhl()});
+document.addEventListener('click',function(e){var a=e.target.closest('a,button');if(!a)return;var h=a.getAttribute('href')||'';var t=a.textContent||'';if(h.includes('#contact')||h.includes('#quote')||t.match(/quote|estimate|consult|start.*project|request.*plan|book.*consult/i)){e.preventDefault();e.stopPropagation();openLpGhl()}},true);
+window.openModal=openLpGhl;window.openLeadPopup=openLpGhl;window.openLp=openLpGhl;
 </script>
 </body>
 </html>
