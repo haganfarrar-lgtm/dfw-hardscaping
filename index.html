@@ -27,5 +27,6 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLpGhl()
 document.addEventListener('click',function(e){var a=e.target.closest('a,button');if(!a)return;var h=a.getAttribute('href')||'';var t=a.textContent||'';if(h.includes('#contact')||h.includes('#quote')||t.match(/quote|estimate|consult|start.*project|request.*plan|book.*consult/i)){e.preventDefault();e.stopPropagation();openLpGhl()}},true);
 window.openModal=openLpGhl;window.openLeadPopup=openLpGhl;window.openLp=openLpGhl;
 </script>
+<script src="https://link.msgsndr.com/js/form_embed.js"></script>
 </body>
 </html>
