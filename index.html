@@ -13,20 +13,45 @@
     <script type="module" src="/src/main.tsx"></script>
   
 <!-- GHL Lead Form -->
-<div id="lp-ghl" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)">
-<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0" onclick="if(event.target===this)closeLpGhl()">
-<div style="background:#fff;width:100%;height:100%;position:relative;overflow:hidden">
-<button onclick="closeLpGhl()" style="position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;background:#f3f4f6;border:none;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2" stroke-linecap="round"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
-<iframe src="https://api.leadconnectorhq.com/widget/form/1rOrQs8ovLRM0oMr5JVY" style="width:100%;height:100%;border:none;padding-top:8px" scrolling="yes" title="Get Free Estimate"></iframe>
-</div></div></div>
-<style>@media(min-width:641px){#lp-ghl>div>div{width:480px;height:90vh;max-height:700px;border-radius:16px}}</style>
+<!-- GHL Lead Form Modal - iOS Fixed -->
+<style>
+#lp-ghl{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:rgba(0,0,0,0.6);}
+#lp-ghl-inner{position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:scroll;-webkit-overflow-scrolling:touch;}
+#lp-ghl-box{background:#fff;width:100%;min-height:100%;position:relative;}
+#lp-ghl-close{position:fixed;top:12px;right:12px;width:40px;height:40px;border-radius:50%;background:#f3f4f6;border:none;cursor:pointer;z-index:100001;}
+@media(min-width:641px){
+  #lp-ghl-inner{display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;}
+  #lp-ghl-box{width:480px;min-height:auto;border-radius:16px;overflow:hidden;}
+}
+</style>
+<div id="lp-ghl">
+  <div id="lp-ghl-inner" onclick="if(event.target===this)closeLpGhl()">
+    <div id="lp-ghl-box">
+      <button id="lp-ghl-close" onclick="closeLpGhl()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2" stroke-linecap="round"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+      <iframe src="https://api.leadconnectorhq.com/widget/form/1rOrQs8ovLRM0oMr5JVY" style="width:100%;min-height:100vh;border:none;display:block;" scrolling="no" title="Get Free Estimate" id="lp-ghl-iframe"></iframe>
+    </div>
+  </div>
+</div>
 <script>
-function openLpGhl(){document.getElementById('lp-ghl').style.display='block';document.body.style.overflow='hidden'}
-function closeLpGhl(){document.getElementById('lp-ghl').style.display='none';document.body.style.overflow=''}
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLpGhl()});
-document.addEventListener('click',function(e){var a=e.target.closest('a,button');if(!a)return;var h=a.getAttribute('href')||'';var t=a.textContent||'';if(h.includes('#contact')||h.includes('#quote')||t.match(/quote|estimate|consult|start.*project|request.*plan|book.*consult/i)){e.preventDefault();e.stopPropagation();openLpGhl()}},true);
+function openLpGhl(){
+  document.getElementById("lp-ghl").style.display="block";
+  document.getElementById("lp-ghl-inner").scrollTop=0;
+  document.body.style.position="fixed";
+  document.body.style.top="-"+window.scrollY+"px";
+  document.body.style.width="100%";
+}
+function closeLpGhl(){
+  var sy=document.body.style.top;
+  document.getElementById("lp-ghl").style.display="none";
+  document.body.style.position="";
+  document.body.style.top="";
+  document.body.style.width="";
+  window.scrollTo(0,parseInt(sy||"0")*-1);
+}
+window.addEventListener("message",function(e){if(e.data&&e.data.type==="resize"&&e.data.value){var f=document.getElementById("lp-ghl-iframe");if(f)f.style.minHeight=(parseInt(e.data.value)+40)+"px";}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeLpGhl()});
+document.addEventListener("click",function(e){var a=e.target.closest("a,button");if(!a)return;var h=a.getAttribute("href")||"";var t=a.textContent||"";if(h.includes("#contact")||h.includes("#quote")||t.match(/quote|estimate|consult|free|start.*project|request|book/i)){e.preventDefault();e.stopPropagation();openLpGhl();}},true);
 window.openModal=openLpGhl;window.openLeadPopup=openLpGhl;window.openLp=openLpGhl;
 </script>
-<script src="https://link.msgsndr.com/js/form_embed.js"></script>
 </body>
 </html>
